@@ -258,19 +258,31 @@ public class BST {
 			sb.append(" }");
 			return sb.toString();
 		}
+
+		public String shortView() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("{").append(value);
+			if (parent == null)
+				sb.append(", N");
+			else
+				sb.append(", ").append(parent.value);
+
+			sb.append(" }");
+			return sb.toString();
+		}
 	}
 
 	@Override
 	public String toString() {
 
-		List<Integer> levelOrder = new ArrayList<>();
+		List<String> levelOrder = new ArrayList<>();
 
 		Queue<Node> queue = new LinkedList<Node>();
 		Node temp = root;
 		queue.add(temp);
 		while (!queue.isEmpty()) {
 			Node visited = queue.poll();
-			levelOrder.add(visited.value);
+			levelOrder.add(visited.shortView());
 			if (visited.left != null) {
 				queue.add(visited.left);
 			}
@@ -281,5 +293,5 @@ public class BST {
 
 		return String.valueOf(levelOrder);
 	}
-
+	
 }
