@@ -14,7 +14,8 @@ public class BSTTest {
 		testDeleteLeftSubTree();
 		testDeleteRightSubTree();
 		testDeleteIntermediateNode();
-		deleteRootNode();
+		testDeleteRootNode();
+		testIterator();
 		System.out.println("All Test cases Passed");
 	}
 
@@ -208,7 +209,7 @@ public class BSTTest {
 	 *              / \    /  \ 
  	 *             1   7  9    12  
 	 */
-	private static void deleteRootNode() {
+	private static void testDeleteRootNode() {
 		BST bst = new BST();
 		int[] input = {8, 5, 10, 1, 7, 9, 12};
 		Arrays.stream(input).forEach(bst::insert);
@@ -224,8 +225,24 @@ public class BSTTest {
 		assert(bst.last() == 12);
 		
 		System.out.println(bst);
-		System.out.println("BSTTest.testInsert() Passed");
+		System.out.println("BSTTest.testDeleteRootNode() Passed");
 	}
 	
-	
+	private static void testIterator() {
+		BST bst = new BST();
+		int[] input = {8, 5, 10, 1, 7, 9, 12};
+		Arrays.stream(input).forEach(bst::insert);
+
+		assert(bst.size() == 7);
+		assert(bst.first() == 1);
+		assert(bst.last() == 12);
+		
+		Iterator itr = bst.getIterator();
+		System.out.println();
+		while(itr.hasNext()) {
+			System.out.print(" "+itr.next());
+		}
+		System.out.println("\n"+bst);
+		System.out.println("BSTTest.testIterator() Passed");
+	}
 }

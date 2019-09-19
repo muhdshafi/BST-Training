@@ -172,7 +172,7 @@ public class BST {
 		size--;
 	}
 
-	public Node getLeftMostNode(Node node) {
+	private Node getLeftMostNode(Node node) {
 		if (node == null) {
 			return null;
 		}
@@ -181,6 +181,22 @@ public class BST {
 			walker = walker.left;
 		}
 		return walker;
+	}
+	/**
+	 * Find ancestor who is left child of its ancestor
+	 * @param current
+	 * @return
+	 */
+	private Node getLeftChildAncestor(Node current) {
+		Node parent = current.parent;
+
+		while(parent != null && current == parent.right) {
+			parent = parent.parent;
+			current = parent;
+		}
+		
+		return parent;
+	
 	}
 
 	public Iterator getIterator() {
@@ -207,17 +223,49 @@ public class BST {
 
 	private class IteratorImpl implements Iterator {
 
+		Node posForward;
+		Node posBackward;
+
+		public IteratorImpl() {
+			this.posForward = begin;
+			this.posBackward = end;
+		}
+
 		@Override
 		public int next() {
-			// TODO Auto-generated method stub
-			return 0;
+			Node inorderSuccessor = getInorderSuccessor(posForward);
+			if (inorderSuccessor == null) {
+				throw new IllegalStateException();
+			}
+			int value  = posForward.value;
+			posForward = inorderSuccessor;
+			return value;
 		}
 
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
-			return false;
+			return getInorderSuccessor(posForward) != null;
 		}
+
+	}
+
+	private Node getInorderSuccessor(Node current) {
+		
+		if(current == null) {
+			return null;
+		}
+		
+		//If node is right most
+		if(current == end) {
+			return null;
+		}
+		
+		//If node has right sub tree
+		if(current.right != null) {
+			return getLeftMostNode(current.right);
+		}
+		
+		return getLeftChildAncestor(current);
 
 	}
 
@@ -293,5 +341,5 @@ public class BST {
 
 		return String.valueOf(levelOrder);
 	}
-	
+
 }
